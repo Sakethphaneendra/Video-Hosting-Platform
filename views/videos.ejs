@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Videos</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Videos</h1>
+
+    <section class="video-section">
+        <h2>Beginner Level</h2>
+        <div class="video-list">
+            <div class="video-item" data-video-level="beginner">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+            <div class="video-item" data-video-level="beginner">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+            <div class="video-item" data-video-level="beginner">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section class="video-section">
+        <h2>Intermediate Level</h2>
+        <div class="video-list">
+            <div class="video-item" data-video-level="intermediate">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+            <div class="video-item" data-video-level="intermediate">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <section class="video-section">
+        <h2>Professional Level</h2>
+        <div class="video-list">
+            <div class="video-item" data-video-level="professional">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+            <div class="video-item" data-video-level="professional">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+            <div class="video-item" data-video-level="professional">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+            <div class="video-item" data-video-level="professional">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+            <div class="video-item" data-video-level="professional">
+                <video controls controlsList="nodownload">
+                    <source src="" type="video/mp4" class="video-source">
+                </video>
+            </div>
+        </div>
+    </section>
+
+    <a href="/logout">Logout</a>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoItems = document.querySelectorAll('.video-item');
+
+            videoItems.forEach(item => {
+                const videoSource = item.querySelector('.video-source');
+                const videoLevel = item.dataset.videoLevel;
+
+                fetch('/generate-token')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Failed to generate token');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        videoSource.src = `/video?token=${data.token}&level=${videoLevel}`;
+                        item.querySelector('video').load();
+                        item.querySelector('video').addEventListener('contextmenu', (e) => e.preventDefault());
+
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        videoSource.parentElement.parentElement.innerHTML = 'Failed to load video. Please try again.';
+                    });
+            });
+        });
+    </script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            min-height: 100vh;
+            margin: 20px;
+            background: #f4f4f4;
+        }
+
+        h1 {
+            font-size: 28px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .video-section {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            width: 90%;
+            max-width: 800px;
+            margin-bottom: 20px;
+        }
+
+        .video-section h2 {
+            font-size: 22px;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .video-list {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+
+        .video-item {
+            width: 30%;
+            margin-bottom: 15px;
+            min-width: 200px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        a {
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+            font-size: 16px;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</body>
+</html>
